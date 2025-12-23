@@ -9,16 +9,15 @@ def gerar_valores():
     valor = 0
 
     while True:
-        # 1. SUBIDA GRADATIVA
         while valor < 40000:
             if valor < 10000:
                 incremento = 1200; intervalo = 0.05
             elif valor < 20000:
                 incremento = 900; intervalo = 0.07
             elif valor < 30000:
-                incremento = 700; intervalo = 0.10
+                incremento = 700; 
             else:
-                incremento = 300; intervalo = 0.20
+                incremento = 300; 
 
             valor += incremento
             if valor > 40000:
@@ -27,11 +26,11 @@ def gerar_valores():
             yield f")0  {valor:05d}    00\r"
             time.sleep(intervalo)
 
-        # 2. Parado
-        for _ in range(40):
+        inicio = time.time()
+
+        while time.time() - inicio < 30:
             yield ")0  40000    00\r"; time.sleep(0.1)
 
-        # 3. DESCIDA
         while valor > 0:
             if valor > 30000:
                 decremento = 300; intervalo = 0.20
@@ -63,7 +62,6 @@ def iniciar_servidor():
     ultimo_evento = datetime.now()
 
     while True:
-        # ⏳ Se ficar 10 min sem receber conexão → encerrar
         if datetime.now() - ultimo_evento > timedelta(seconds=TIMEOUT_OCIOSO):
             print("Nenhuma conexão por mais de 10 minutos. Encerrando servidor.")
             return
